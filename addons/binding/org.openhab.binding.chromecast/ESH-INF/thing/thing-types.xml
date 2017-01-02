@@ -34,6 +34,7 @@
             <channel id="control" typeId="control"/>
             <channel id="volume" typeId="volume"/>
             <channel id="playuri" typeId="playuri"/>
+            <channel id="application" typeId="application"/>
         </channels>
 
         <config-description>
@@ -57,6 +58,13 @@
         <item-type>String</item-type>
         <label>Play URI</label>
         <description>Plays a given URI</description>
+    </channel-type>
+
+    <channel-type id="application" advanced="true">
+        <item-type>String</item-type>
+        <label>Application</label>
+        <description>Application running on chromecast</description>
+        <state readOnly="true"></state>
     </channel-type>
 
     <channel-type id="control">

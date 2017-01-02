@@ -36,6 +36,7 @@ public class ChromecastBindingConstants {
     public static final String CHANNEL_CONTROL = "control";
     public static final String CHANNEL_VOLUME = "volume";
     public static final String CHANNEL_PLAY_URI = "playuri";
+    public static final String CHANNEL_APPLICATION = "application";
 
     // config parameters
     public static final String HOST = "ipAddress";

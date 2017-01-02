@@ -10,6 +10,7 @@ package org.openhab.binding.chromecast.handler;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.Locale;
+import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
@@ -117,6 +118,7 @@ public class ChromecastHandler extends BaseThingHandler implements ChromeCastSpo
                 chromecast.connect();
                 // assume device is online as we no longer get notified
                 updateStatus(ThingStatus.ONLINE);
+                updateChannels(chromecast.getStatus());
             } catch (final Exception e) {
                 updateStatus(ThingStatus.OFFLINE, ThingStatusDetail.OFFLINE.COMMUNICATION_ERROR, e.getMessage());
                 scheduleConnect(false);
@@ -213,6 +215,7 @@ public class ChromecastHandler extends BaseThingHandler implements ChromeCastSpo
 
     private void handleCcStatus(final Status status) {
         handleCcVolume(status.volume);
+        handleCCApplication(Optional.ofNullable(status.getRunningApp()));
     }
 
     private void handleCcMediaStatus(final MediaStatus mediaStatus) {
@@ -236,6 +239,14 @@ public class ChromecastHandler extends BaseThingHandler implements ChromeCastSpo
         PercentType value = new PercentType((int) (volume.level * 100));
         updateState(new ChannelUID(getThing().getUID(), ChromecastBindingConstants.CHANNEL_VOLUME), value);
         this.volume = value;
+    }
+
+    private void handleCCApplication(Optional<Application> runningApp) {
+        StringType value = runningApp
+                .map(application -> application.name)
+                .map(name -> new StringType(name))
+                .orElse(null)
+        updateState(new ChannelUID(getThing().getUID(), ChromecastBindingConstants.CHANNEL_APPLICATION), value);
     }
 
     @Override
